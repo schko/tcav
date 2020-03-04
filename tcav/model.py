@@ -357,6 +357,28 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
     # Following tfzoo convention.
     return pred_t[::16]
 
+class CNNFC2NetWrapper_public(PublicImageModelWrapper):
+
+    def __init__(self, sess, model_saved_path, labels_path):
+      image_shape_v1 = [224, 224, 3]  # [224, 224, 3]
+      self.image_value_range = (-117, 255 - 117)
+      endpoints_v1 = dict(
+        input='conv2d_1_input:0',
+        # logit='softmax2_pre_activation:0',
+        prediction='activation_5/Sigmoid:0',
+        # pre_avgpool='mixed5b:0',
+        # logit_weight='softmax2_w:0',
+        # logit_bias='softmax2_b:0',
+    )
+      self.sess = sess
+      super(CNNFC2NetWrapper_public, self).__init__(sess,
+                                                  model_saved_path,
+                                                  labels_path,
+                                                  image_shape_v1,
+                                                  endpoints_v1,
+                                                  scope='v1')
+      self.model_name = 'CNNFC2Net_public'
+        
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
   def __init__(self, sess, model_saved_path, labels_path):
     self.image_value_range = (-1, 1)
