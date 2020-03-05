@@ -127,11 +127,11 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     print('node_dict: ', node_dict)
     print('import_prefix: ', self.import_prefix)
     for k, v in node_dict.iteritems():
-        print('k: ', k, '; v: ', v)
+      print('k: ', k, '; v: ', v)
       if self.import_prefix:
         v = 'import/' + v
       tensor = self.sess.graph.get_operation_by_name(v.strip(':0')).outputs[0]
-        print('tensor: ', tensor)
+      print('tensor: ', tensor)
         
       if k == 'input' or k == 'prediction':
         self.ends[k] = tensor
