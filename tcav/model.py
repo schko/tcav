@@ -227,7 +227,7 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     Returns:
       Activations in the given layer.
     """
-    print('examples: ', examples)
+    print('examples.shape: ', examples.shape)
     print('bottleneck_name: ', bottleneck_name)
     print('self.bottlenecks_tensors: ', self.bottlenecks_tensors)
     print('self.ends: ', self.ends)
