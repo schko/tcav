@@ -308,9 +308,17 @@ class PublicImageModelWrapper(ImageModelWrapper):
   @staticmethod
   def get_bottleneck_tensors(scope):
     """Add Inception bottlenecks and their pre-Relu versions to endpoints dict."""
+    print('-------get_bottleneck_tensors--------')
+    print('scope: ', scope)
     graph = tf.get_default_graph()
+    print('graph: ', graph)
+    print('graph.get_operations(): ', graph.get_operations())
     bn_endpoints = {}
     for op in graph.get_operations():
+      print('op: ', op)
+      print('op.name: ', op.name)
+      print('op.type: ', op.type)
+      print('op.outputs: ', op.outputs)
       if op.name.startswith(scope+'/') and 'Concat' in op.type: #<-- Reshape for CNN + FC
         name = op.name.split('/')[1]
         bn_endpoints[name] = op.outputs[0]
