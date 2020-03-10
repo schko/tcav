@@ -312,7 +312,6 @@ class PublicImageModelWrapper(ImageModelWrapper):
     print('scope: ', scope)
     graph = tf.get_default_graph()
     print('graph: ', graph)
-    print('graph.get_operations(): ', graph.get_operations())
     bn_endpoints = {}
     for op in graph.get_operations():
       print('op: ', op)
