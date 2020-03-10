@@ -318,7 +318,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
       print('op.name: ', op.name)
       print('op.type: ', op.type)
       print('op.outputs: ', op.outputs)
-      if op.name.startswith(scope+'/') and 'Reshape' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
+      if op.name.startswith(scope+'/') and 'BiasAdd' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
         name = op.name.split('/')[1]
         bn_endpoints[name] = op.outputs[0]
     return bn_endpoints
