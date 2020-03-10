@@ -311,7 +311,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
     graph = tf.get_default_graph()
     bn_endpoints = {}
     for op in graph.get_operations():
-      if op.name.startswith(scope+'/') and 'Reshape' in op.type:
+      if op.name.startswith(scope+'/') and 'Concat' in op.type: #<-- Reshape for CNN + FC
         name = op.name.split('/')[1]
         bn_endpoints[name] = op.outputs[0]
     return bn_endpoints
