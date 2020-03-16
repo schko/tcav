@@ -56,6 +56,7 @@ class TCAV(object):
     # Grad points in the direction which DECREASES probability of class
     print('----getting directional derivative sign inputs----')
     print('mymodel: ', mymodel)
+    print('mymodel.summary: ', mymodel.summary())
     print('act: ', act)
     print('cav: ', cav)
     print('concept: ', concept)
