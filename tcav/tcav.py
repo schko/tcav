@@ -56,20 +56,19 @@ class TCAV(object):
     # Grad points in the direction which DECREASES probability of class
     print('----getting directional derivative sign inputs----')
     print('mymodel: ', mymodel)
-    print('act: ', act)
-    print('cav: ', cav)
+    print('act.shape: ', act.shape)
+    print('cav.shape: ', cav.shape)
     print('concept: ', concept)
     print('class_id: ', class_id)
-    print('example: ', example)
+    print('example.shape: ', example.shape)
     print('---other vars---')
     print('cav.bottleneck: ', cav.bottleneck)
     grad = np.reshape(mymodel.get_gradient(
         act, [class_id], cav.bottleneck, example), -1)
     print('grad.shape: ', grad.shape)
-    print('grad: ', grad)
-    print('cav.get_direction(concept): ', cav.get_direction(concept))
+    print('cav.get_direction(concept).shape: ', cav.get_direction(concept).shape)
     dot_prod = np.dot(grad, cav.get_direction(concept))
-    print('dot_prod: ', dot_prod)
+    print('dot_prod.shape: ', dot_prod.shape)
     return dot_prod < 0
 
   @staticmethod
