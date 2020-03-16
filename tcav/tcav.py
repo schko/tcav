@@ -57,7 +57,7 @@ class TCAV(object):
     print('----getting directional derivative sign inputs----')
     print('mymodel: ', mymodel)
     print('act.shape: ', act.shape)
-    print('cav.shape: ', cav.shape)
+    print('cav: ', cav)
     print('concept: ', concept)
     print('class_id: ', class_id)
     print('example.shape: ', example.shape)
