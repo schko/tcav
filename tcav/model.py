@@ -371,7 +371,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v1,
                                                   endpoints_v1,
-                                                  scope='v1', default_vars)
+                                                  scope='v1', default_vars=False)
     self.model_name = 'GoogleNet_public'
 
   def adjust_prediction(self, pred_t):
@@ -398,7 +398,7 @@ class CNNFC2NetWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v1,
                                                   endpoints_v1,
-                                                  scope='v1', default_vars)
+                                                  scope='v1', default_vars=False)
       self.model_name = 'CNNFC2Net_public'
         
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
