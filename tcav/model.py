@@ -318,6 +318,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
       print('op.name: ', op.name)
       print('op.type: ', op.type)
       print('op.outputs: ', op.outputs)
+      print('default_vars: ', default_vars)
       if default_vars:
           if op.name.startswith(scope+'/') and 'Concat' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
             name = op.name.split('/')[1]
