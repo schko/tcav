@@ -257,7 +257,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
                labels_path,
                image_shape,
                endpoints_dict,
-               scope):
+               scope, default_vars=False):
     super(PublicImageModelWrapper, self).__init__(image_shape)
     self.labels = tf.gfile.Open(labels_path).read().splitlines()
     self.ends = PublicImageModelWrapper.import_graph(model_fn_path,
@@ -265,7 +265,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
                                                      self.image_value_range,
                                                      scope=scope)
     self.bottlenecks_tensors = PublicImageModelWrapper.get_bottleneck_tensors(
-        scope)
+        scope, default_vars)
     graph = tf.get_default_graph()
 
     # Construct gradient ops.
@@ -306,7 +306,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
 
   # From Alex's code.
   @staticmethod
-  def get_bottleneck_tensors(scope):
+  def get_bottleneck_tensors(scope, default_vars=False):
     """Add Inception bottlenecks and their pre-Relu versions to endpoints dict."""
     print('-------get_bottleneck_tensors--------')
     print('scope: ', scope)
@@ -318,9 +318,14 @@ class PublicImageModelWrapper(ImageModelWrapper):
       print('op.name: ', op.name)
       print('op.type: ', op.type)
       print('op.outputs: ', op.outputs)
-      if op.name.startswith(scope+'/') and 'BiasAdd' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
-        name = op.name.split('/')[1]
-        bn_endpoints[name] = op.outputs[0]
+      if default_vars:
+          if op.name.startswith(scope+'/') and 'Reshape' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
+            name = op.name.split('/')[1]
+            bn_endpoints[name] = op.outputs[0]
+      else:
+          if op.name.startswith(scope+'/') and 'BiasAdd' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
+            name = op.name.split('/')[1]
+            bn_endpoints[name] = op.outputs[0]
     return bn_endpoints
 
   # Load graph and import into graph used by our session
@@ -349,7 +354,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
 
 class GoolgeNetWrapper_public(PublicImageModelWrapper):
 
-  def __init__(self, sess, model_saved_path, labels_path):
+  def __init__(self, sess, model_saved_path, labels_path, default_vars=False):
     image_shape_v1 = [224, 224, 3]
     self.image_value_range = (-117, 255-117)
     endpoints_v1 = dict(
@@ -366,7 +371,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v1,
                                                   endpoints_v1,
-                                                  scope='v1')
+                                                  scope='v1', default_vars)
     self.model_name = 'GoogleNet_public'
 
   def adjust_prediction(self, pred_t):
@@ -376,7 +381,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
 
 class CNNFC2NetWrapper_public(PublicImageModelWrapper):
 
-    def __init__(self, sess, model_saved_path, labels_path):
+    def __init__(self, sess, model_saved_path, labels_path, default_vars=False):
       image_shape_v1 = [224, 224, 3]  # [224, 224, 3]
       self.image_value_range = (-117, 255 - 117)
       endpoints_v1 = dict(
@@ -393,7 +398,7 @@ class CNNFC2NetWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v1,
                                                   endpoints_v1,
-                                                  scope='v1')
+                                                  scope='v1', default_vars)
       self.model_name = 'CNNFC2Net_public'
         
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
