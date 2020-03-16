@@ -84,7 +84,7 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     try:
       self.sess = tf.Session(graph=tf.Graph())
       with self.sess.graph.as_default():
-        if tf.gfile.IsDirectory(model_path):
+        if tf.io.gfile.isdir(model_path):
           ckpt = tf.train.latest_checkpoint(model_path)
           if ckpt:
             tf.logging.info('Loading from the latest checkpoint.')
@@ -97,11 +97,11 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
           input_graph_def = tf.GraphDef()
           if model_path.endswith('.pb'):
             tf.logging.info('Loading from frozen binary graph.')
-            with tf.gfile.FastGFile(model_path, 'rb') as f:
+            with tf.io.gfile.GFile(model_path, 'rb') as f:
               input_graph_def.ParseFromString(f.read())
           else:
             tf.logging.info('Loading from frozen text graph.')
-            with tf.gfile.FastGFile(model_path) as f:
+            with tf.io.gfile.GFile(model_path) as f:
               text_format.Parse(f.read(), input_graph_def)
           tf.import_graph_def(input_graph_def)
           self.import_prefix = True
@@ -121,18 +121,12 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     The 'ends' and 'bottlenecks_tensors' dictionary should map to tensors
     with the according name.
     """
-    print('---finding bottlenecks---')
     self.bottlenecks_tensors = {}
     self.ends = {}
-    print('node_dict: ', node_dict)
-    print('import_prefix: ', self.import_prefix)
     for k, v in node_dict.iteritems():
-      print('k: ', k, '; v: ', v)
       if self.import_prefix:
         v = 'import/' + v
       tensor = self.sess.graph.get_operation_by_name(v.strip(':0')).outputs[0]
-      print('tensor: ', tensor)
-        
       if k == 'input' or k == 'prediction':
         self.ends[k] = tensor
       else:
@@ -227,10 +221,6 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     Returns:
       Activations in the given layer.
     """
-    print('examples.shape: ', examples.shape)
-    print('bottleneck_name: ', bottleneck_name)
-    print('self.bottlenecks_tensors: ', self.bottlenecks_tensors)
-    print('self.ends: ', self.ends)
     return self.sess.run(self.bottlenecks_tensors[bottleneck_name],
                          {self.ends['input']: examples})
 
@@ -257,15 +247,15 @@ class PublicImageModelWrapper(ImageModelWrapper):
                labels_path,
                image_shape,
                endpoints_dict,
-               scope, default_vars=False):
+               scope):
     super(PublicImageModelWrapper, self).__init__(image_shape)
-    self.labels = tf.gfile.Open(labels_path).read().splitlines()
+    self.labels = tf.io.gfile.GFile(labels_path).read().splitlines()
     self.ends = PublicImageModelWrapper.import_graph(model_fn_path,
                                                      endpoints_dict,
                                                      self.image_value_range,
                                                      scope=scope)
     self.bottlenecks_tensors = PublicImageModelWrapper.get_bottleneck_tensors(
-        scope, default_vars)
+        scope)
     graph = tf.get_default_graph()
 
     # Construct gradient ops.
@@ -306,27 +296,14 @@ class PublicImageModelWrapper(ImageModelWrapper):
 
   # From Alex's code.
   @staticmethod
-  def get_bottleneck_tensors(scope, default_vars=False):
+  def get_bottleneck_tensors(scope):
     """Add Inception bottlenecks and their pre-Relu versions to endpoints dict."""
-    print('-------get_bottleneck_tensors--------')
-    print('scope: ', scope)
     graph = tf.get_default_graph()
-    print('graph: ', graph)
     bn_endpoints = {}
     for op in graph.get_operations():
-      print('op: ', op)
-      print('op.name: ', op.name)
-      print('op.type: ', op.type)
-      print('op.outputs: ', op.outputs)
-      print('default_vars: ', default_vars)
-      if default_vars:
-          if op.name.startswith(scope+'/') and 'Concat' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
-            name = op.name.split('/')[1]
-            bn_endpoints[name] = op.outputs[0]
-      else:
-          if op.name.startswith(scope+'/') and 'BiasAdd' in op.type: #<-- Reshape as opposed to Concat for CNN + FC
-            name = op.name.split('/')[1]
-            bn_endpoints[name] = op.outputs[0]
+      if op.name.startswith(scope+'/') and 'Concat' in op.type:
+        name = op.name.split('/')[1]
+        bn_endpoints[name] = op.outputs[0]
     return bn_endpoints
 
   # Load graph and import into graph used by our session
@@ -338,7 +315,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
         'Scope "%s" already exists. Provide explicit scope names when '
         'importing multiple instances of the model.') % scope
 
-    graph_def = tf.GraphDef.FromString(tf.gfile.Open(saved_path, 'rb').read())
+    graph_def = tf.GraphDef.FromString(tf.io.gfile.GFile(saved_path, 'rb').read())
 
     with tf.name_scope(scope) as sc:
       t_input, t_prep_input = PublicImageModelWrapper.create_input(
@@ -355,7 +332,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
 
 class GoolgeNetWrapper_public(PublicImageModelWrapper):
 
-  def __init__(self, sess, model_saved_path, labels_path, default_vars=False):
+  def __init__(self, sess, model_saved_path, labels_path):
     image_shape_v1 = [224, 224, 3]
     self.image_value_range = (-117, 255-117)
     endpoints_v1 = dict(
@@ -372,7 +349,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v1,
                                                   endpoints_v1,
-                                                  scope='v1', default_vars=False)
+                                                  scope='v1')
     self.model_name = 'GoogleNet_public'
 
   def adjust_prediction(self, pred_t):
@@ -380,28 +357,6 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
     # Following tfzoo convention.
     return pred_t[::16]
 
-class CNNFC2NetWrapper_public(PublicImageModelWrapper):
-
-    def __init__(self, sess, model_saved_path, labels_path, default_vars=False):
-      image_shape_v1 = [224, 224, 3]  # [224, 224, 3]
-      self.image_value_range = (-117, 255 - 117)
-      endpoints_v1 = dict(
-        input='conv2d_1_input:0',
-        # logit='softmax2_pre_activation:0',
-        prediction='activation_5/Sigmoid:0',
-        # pre_avgpool='mixed5b:0',
-        # logit_weight='softmax2_w:0',
-        # logit_bias='softmax2_b:0',
-    )
-      self.sess = sess
-      super(CNNFC2NetWrapper_public, self).__init__(sess,
-                                                  model_saved_path,
-                                                  labels_path,
-                                                  image_shape_v1,
-                                                  endpoints_v1,
-                                                  scope='v1', default_vars=False)
-      self.model_name = 'CNNFC2Net_public'
-        
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
   def __init__(self, sess, model_saved_path, labels_path):
     self.image_value_range = (-1, 1)
