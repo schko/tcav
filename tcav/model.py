@@ -135,15 +135,10 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
   def _make_gradient_tensors(self):
     """Makes gradient tensors for all bottleneck tensors.
     """
-    print('----making gradient tensors----')
     self.bottlenecks_gradients = {}
     for bn in self.bottlenecks_tensors:
       self.bottlenecks_gradients[bn] = tf.gradients(
           self.loss, self.bottlenecks_tensors[bn])[0]
-      print('bn: ', bn)
-      print('self.bottlenecks_gradients[bn]: ', self.bottlenecks_gradients[bn])
-      print('self.bottlenecks_tensors[bn]: ', self.bottlenecks_tensors[bn])
-      print('self.bottlenecks_tensors[bn][0]: ', self.bottlenecks_tensors[bn][0])
 
 
   def get_gradient(self, acts, y, bottleneck_name, example):
@@ -317,7 +312,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
     if default_vars:
         op_type = 'Concat'
     else:
-        op_type = 'BiasAdd'
+        op_type = 'Merge'
     for op in graph.get_operations():
       if op.name.startswith(scope+'/') and op_type in op.type:
         name = op.name.split('/')[1]
