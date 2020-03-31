@@ -135,6 +135,7 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
   def _make_gradient_tensors(self):
     """Makes gradient tensors for all bottleneck tensors.
     """
+    print('----making gradient tensors----')
     self.bottlenecks_gradients = {}
     for bn in self.bottlenecks_tensors:
       self.bottlenecks_gradients[bn] = tf.gradients(
