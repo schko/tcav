@@ -140,6 +140,10 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     for bn in self.bottlenecks_tensors:
       self.bottlenecks_gradients[bn] = tf.gradients(
           self.loss, self.bottlenecks_tensors[bn])[0]
+      print('bn: ', bn)
+      print('self.bottlenecks_gradients[bn]: ', self.bottlenecks_gradients[bn])
+      print('self.bottlenecks_tensors[bn])[0]: ', self.bottlenecks_tensors[bn][0])
+      print('self.bottlenecks_tensors[bn]): ', self.bottlenecks_tensors[bn])
 
   def get_gradient(self, acts, y, bottleneck_name, example):
     """Return the gradient of the loss with respect to the bottleneck_name.
