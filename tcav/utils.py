@@ -37,7 +37,7 @@ def create_session(timeout=10000, interactive=True):
     TF session.
   """
   graph = tf.Graph()
-  config = tf.compat.v1.ConfigProto()
+  config = tf.ConfigProto()
   config.gpu_options.allow_growth = True
   config.operation_timeout_in_ms = int(timeout*1000)
   if interactive:
