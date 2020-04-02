@@ -312,7 +312,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
     if default_vars:
         op_type = 'Concat'
     else:
-        op_type = 'Reshape' # Reshape in a past try
+        op_type = 'BiasAdd' # Reshape in a past try
     for op in graph.get_operations():
       if op.name.startswith(scope+'/') and op_type in op.type:
         name = op.name.split('/')[1]
