@@ -312,7 +312,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
     if default_vars:
         op_type = 'Concat' # for GoogleNet
     else:
-        op_type = 'Reshape' # Reshape for flatten_1, Merge for batch_normalization_1, BiasAdd for conv2d_1/conv2d_3/dense
+        op_type = 'BiasAdd' # Reshape for flatten_1, Merge for batch_normalization_1, BiasAdd for conv2d_1/conv2d_3/dense_1
     for op in graph.get_operations():
       if op.name.startswith(scope+'/') and op_type in op.type:
         name = op.name.split('/')[1]
@@ -373,7 +373,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
 class CNNFC2NetWrapper_public(PublicImageModelWrapper):
 
     def __init__(self, sess, model_saved_path, labels_path, default_vars):
-      image_shape_v1 = [600, 450, 3]  # [224, 224, 3]
+      image_shape_v1 = [224, 224, 3]  # [224, 224, 3]
       self.image_value_range = (-117, 255 - 117)
       endpoints_v1 = dict(
         input='conv2d_1_input:0',
