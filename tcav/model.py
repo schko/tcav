@@ -373,7 +373,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
 class CNNFC2NetWrapper_public(PublicImageModelWrapper):
 
     def __init__(self, sess, model_saved_path, labels_path, default_vars):
-      image_shape_v1 = [450, 600, 3]  # [224, 224, 3]
+      image_shape_v1 = [1000, 2700, 3]  # [224, 224, 3]
       self.image_value_range = (-117, 255 - 117)
       endpoints_v1 = dict(
         input='conv2d_1_input:0',
