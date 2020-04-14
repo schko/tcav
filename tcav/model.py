@@ -373,7 +373,7 @@ class GoolgeNetWrapper_public(PublicImageModelWrapper):
 class CNNFC2NetWrapper_public(PublicImageModelWrapper):
 
     def __init__(self, sess, model_saved_path, labels_path, default_vars):
-      image_shape_v1 = [1000, 2700, 3]  # [224, 224, 3]
+      image_shape_v1 = [450, 600, 3]  # [224, 224, 3]
       self.image_value_range = (-117, 255 - 117)
       endpoints_v1 = dict(
         input='conv2d_1_input:0',
@@ -391,6 +391,28 @@ class CNNFC2NetWrapper_public(PublicImageModelWrapper):
                                                   endpoints_v1,
                                                   scope='v1', default_vars=default_vars)
       self.model_name = 'CNNFC2Net_public'
+        
+class ResNetWrapper_public(PublicImageModelWrapper):
+
+    def __init__(self, sess, model_saved_path, labels_path, default_vars):
+      image_shape_v1 = [450, 600, 3]  # [224, 224, 3]
+      self.image_value_range = (-117, 255 - 117)
+      endpoints_v1 = dict(
+        input='resnet18_input:0',
+        # logit='softmax2_pre_activation:0',
+        prediction='dense_9/Sigmoid:0',
+        # pre_avgpool='mixed5b:0',
+        # logit_weight='softmax2_w:0',
+        # logit_bias='softmax2_b:0',
+    )
+      self.sess = sess
+      super(ResNetWrapper_public, self).__init__(sess,
+                                                  model_saved_path,
+                                                  labels_path,
+                                                  image_shape_v1,
+                                                  endpoints_v1,
+                                                  scope='v1', default_vars=default_vars)
+      self.model_name = 'ResNet_public'
         
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
   def __init__(self, sess, model_saved_path, labels_path):
