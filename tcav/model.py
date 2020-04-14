@@ -414,6 +414,28 @@ class ResNetWrapper_public(PublicImageModelWrapper):
                                                   scope='v1', default_vars=default_vars)
       self.model_name = 'ResNet_public'
         
+class inceptionV3TLWrapper_public(PublicImageModelWrapper):
+
+    def __init__(self, sess, model_saved_path, labels_path, default_vars):
+      image_shape_v1 = [450, 600, 3]  # [224, 224, 3]
+      self.image_value_range = (-117, 255 - 117)
+      endpoints_v1 = dict(
+        input='inception_v3_input:0',
+        # logit='softmax2_pre_activation:0',
+        prediction='dense_3/Sigmoid:0',
+        # pre_avgpool='mixed5b:0',
+        # logit_weight='softmax2_w:0',
+        # logit_bias='softmax2_b:0',
+    )
+      self.sess = sess
+      super(inceptionV3TLWrapper_public, self).__init__(sess,
+                                                  model_saved_path,
+                                                  labels_path,
+                                                  image_shape_v1,
+                                                  endpoints_v1,
+                                                  scope='v1', default_vars=default_vars)
+      self.model_name = 'inceptionV3TL_public'
+        
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
   def __init__(self, sess, model_saved_path, labels_path):
     self.image_value_range = (-1, 1)
