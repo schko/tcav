@@ -439,9 +439,9 @@ class ResNetWrapper_public(PublicImageModelWrapper):
 class inceptionV3TLWrapper_public(PublicImageModelWrapper):
 
     def __init__(self, sess, model_saved_path, labels_path, default_vars):
-      image_shape_v1 = [450, 600, 3]  # [224, 224, 3]
+      image_shape_v3 = [450, 600, 3]  # [224, 224, 3]
       self.image_value_range = (-117, 255 - 117)
-      endpoints_v1 = dict(
+      endpoints_v3 = dict(
         input='inception_v3_input:0',
         # logit='softmax2_pre_activation:0',
         prediction='dense_3/Sigmoid:0',
