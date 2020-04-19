@@ -275,7 +275,8 @@ class TCAV(object):
         cav_dir=cav_dir,
         cav_hparams=cav_hparams,
         overwrite=overwrite)
-
+    print('acts: ', acts)
+    print('cav_instance: ', cav_instance)
     # clean up
     for c in concepts:
       del acts[c]
@@ -286,7 +287,6 @@ class TCAV(object):
     target_class_for_compute_tcav_score = target_class
 
     cav_concept = concepts[0]
-
     i_up = self.compute_tcav_score(
         mymodel, target_class_for_compute_tcav_score, cav_concept,
         cav_instance, acts[target_class][cav_instance.bottleneck],
