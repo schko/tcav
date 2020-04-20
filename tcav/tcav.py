@@ -136,6 +136,12 @@ class TCAV(object):
     Returns:
       list of values of directional derivatives.
     """
+    print('--inputs to getting directional derivs--')
+    print('mymodel: ', mymodel)
+    print('concept: ', concept)
+    print('cav: ', cav)
+    print('class_acts: ', class_acts.shape, class_acts)
+    print('examples: ', examples.shape, examples)
     class_id = mymodel.label_to_id(target_class)
     directional_dir_vals = []
     for i in range(len(class_acts)):
@@ -143,6 +149,7 @@ class TCAV(object):
       example = examples[i]
       grad = np.reshape(
           mymodel.get_gradient(act, [class_id], cav.bottleneck, example), -1)
+      print('grad: ', grad)
       directional_dir_vals.append(np.dot(grad, cav.get_direction(concept)))
     return directional_dir_vals
 
