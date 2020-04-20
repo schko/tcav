@@ -275,8 +275,6 @@ class TCAV(object):
         cav_dir=cav_dir,
         cav_hparams=cav_hparams,
         overwrite=overwrite)
-    print('acts: ', acts)
-    print('cav_instance: ', cav_instance)
     # clean up
     for c in concepts:
       del acts[c]
