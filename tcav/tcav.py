@@ -138,6 +138,7 @@ class TCAV(object):
     """
     print('--inputs to getting directional derivs--')
     print('mymodel: ', mymodel)
+    print('target_class: ', target_class)
     print('concept: ', concept)
     print('cav: ', cav)
     print('class_acts: ', class_acts.shape, class_acts)
