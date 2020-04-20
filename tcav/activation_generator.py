@@ -110,10 +110,12 @@ class ImageActivationGenerator(ActivationGeneratorBase):
 
   def get_examples_for_concept(self, concept):
     concept_dir = os.path.join(self.source_dir, concept)
+    print('concept_dir in act gen: ', concept_dir)
     img_paths = [os.path.join(concept_dir, d)
                  for d in tf.io.gfile.listdir(concept_dir)]
     imgs = self.load_images_from_files(img_paths, self.max_examples,
                                        shape=self.model.get_image_shape()[:2])
+    print('imgs in act gen: ', imgs)
     return imgs
 
   def load_image_from_file(self, filename, shape):
