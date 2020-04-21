@@ -117,8 +117,8 @@ class ImageActivationGenerator(ActivationGeneratorBase):
     imgs = self.load_images_from_files(img_paths, self.max_examples,
                                        shape=self.model.get_image_shape()[:2])
     print('first image in act gen, imgs of shape ', imgs.shape)
-    plt.imshow(imgs[0])
-    plt.show()
+    #plt.imshow(imgs[0])
+    #plt.show()
     return imgs
 
   def load_image_from_file(self, filename, shape):
