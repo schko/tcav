@@ -62,8 +62,8 @@ class TCAV(object):
     print('concept: ', concept)
     print('class_id: ', class_id)
     print('example.shape: ', example.shape)
-    plt.imshow(example)
-    plt.show()
+    #plt.imshow(example)
+    #plt.show()
 
     print('---other vars---')
     print('cav.bottleneck: ', cav.bottleneck)
