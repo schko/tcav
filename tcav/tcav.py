@@ -26,8 +26,9 @@ from tcav import utils
 import numpy as np
 import time
 import tensorflow as tf
-from PIL import Image
-from datetime import datetime
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
 
 class TCAV(object):
   """TCAV object: runs TCAV for one target and a set of concepts.
@@ -61,11 +62,8 @@ class TCAV(object):
     print('concept: ', concept)
     print('class_id: ', class_id)
     print('example.shape: ', example.shape)
-    current_time = datetime.now().strftime("%H:%M:%S")
-    im = Image.fromarray(example)
-    im.save(current_time+".jpeg")
+    plt.imshow(example)
 
-    scipy.misc.toimage(example, cmin=0.0, cmax=...).save(current_time+'.jpg')
     print('---other vars---')
     print('cav.bottleneck: ', cav.bottleneck)
     grad = np.reshape(mymodel.get_gradient(
