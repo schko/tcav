@@ -108,7 +108,7 @@ def plot_results(results, random_counterpart=None, random_concepts=None, num_ran
           plot_data[bottleneck]['bn_vals'].append(np.mean(i_ups))
           plot_data[bottleneck]['bn_stds'].append(np.std(i_ups))
           plot_data[bottleneck]['significant'].append(True)
-
+        print('random_i_ups[bottleneck]: ', random_i_ups[bottleneck])
         print(3 * " ", "Bottleneck =", ("%s. TCAV Score = %.2f (+- %.2f), "
             "random was %.2f (+- %.2f). p-val = %.3f (%s)") % (
             bottleneck, np.mean(i_ups), np.std(i_ups),
