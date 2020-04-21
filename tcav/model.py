@@ -457,7 +457,7 @@ class inceptionV3TLWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v3,
                                                   endpoints_v1,
-                                                  scope='v1', default_vars=default_vars)
+                                                  scope='inception_v3', default_vars=default_vars)
       self.model_name = 'inceptionV3TL_public'
         
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
