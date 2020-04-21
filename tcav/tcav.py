@@ -26,8 +26,7 @@ from tcav import utils
 import numpy as np
 import time
 import tensorflow as tf
-import scipy.misc
-from datetime import datetime
+from PIL import Image
 
 
 class TCAV(object):
@@ -63,6 +62,8 @@ class TCAV(object):
     print('class_id: ', class_id)
     print('example.shape: ', example.shape)
     current_time = datetime.now().strftime("%H:%M:%S")
+    im = Image.fromarray(example)
+    im.save(current_time+".jpeg")
 
     scipy.misc.toimage(example, cmin=0.0, cmax=...).save(current_time+'.jpg')
     print('---other vars---')
