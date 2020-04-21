@@ -55,24 +55,19 @@ class TCAV(object):
     Returns:
         sign of the directional derivative
     """
-    print('----getting directional derivative sign inputs----')
-    print('mymodel: ', mymodel)
-    print('act.shape: ', act.shape)
-    print('cav: ', cav)
-    print('concept: ', concept)
-    print('class_id: ', class_id)
-    print('example.shape: ', example.shape)
+    #print('----getting directional derivative sign inputs----')
+    #print('mymodel: ', mymodel)
+    #print('act.shape: ', act.shape)
+    #print('cav: ', cav)
+    #print('concept: ', concept)
+    #print('class_id: ', class_id)
+    #print('example.shape: ', example.shape)
     #plt.imshow(example)
     #plt.show()
 
-    print('---other vars---')
-    print('cav.bottleneck: ', cav.bottleneck)
     grad = np.reshape(mymodel.get_gradient(
         act, [class_id], cav.bottleneck, example), -1)
-    print('grad.shape: ', grad.shape)
-    print('cav.get_direction(concept).shape: ', cav.get_direction(concept).shape)
     dot_prod = np.dot(grad, cav.get_direction(concept))
-    print('dot_prod.shape: ', dot_prod.shape)
     return dot_prod < 0
 
   @staticmethod
@@ -141,13 +136,13 @@ class TCAV(object):
     Returns:
       list of values of directional derivatives.
     """
-    print('--inputs to getting directional derivs--')
-    print('mymodel: ', mymodel)
-    print('target_class: ', target_class)
-    print('concept: ', concept)
-    print('cav: ', cav)
-    print('class_acts: ', class_acts.shape, class_acts)
-    print('examples: ', examples.shape, examples)
+    #print('--inputs to getting directional derivs--')
+    #print('mymodel: ', mymodel)
+    #print('target_class: ', target_class)
+    #print('concept: ', concept)
+    #print('cav: ', cav)
+    #print('class_acts: ', class_acts.shape, class_acts)
+    #print('examples: ', examples.shape, examples)
     class_id = mymodel.label_to_id(target_class)
     directional_dir_vals = []
     for i in range(len(class_acts)):
