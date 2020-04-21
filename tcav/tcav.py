@@ -26,6 +26,8 @@ from tcav import utils
 import numpy as np
 import time
 import tensorflow as tf
+import png
+from datetime import datetime
 
 
 class TCAV(object):
@@ -60,6 +62,9 @@ class TCAV(object):
     print('concept: ', concept)
     print('class_id: ', class_id)
     print('example.shape: ', example.shape)
+    current_time = datetime.now().strftime("%H:%M:%S")
+
+    png.from_array(example, 'L').save(current_time+".png")
     print('---other vars---')
     print('cav.bottleneck: ', cav.bottleneck)
     grad = np.reshape(mymodel.get_gradient(
