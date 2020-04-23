@@ -468,9 +468,9 @@ class vgg16multiClassWrapper_public(PublicImageModelWrapper):
       image_shape_v3 = [600, 450, 3]  # [450, 600, 3]
       self.image_value_range = (-117, 255 - 117)
       endpoints_v1 = dict(
-        input='input_1_1:0',
+        input='input_1:0',
         # logit='softmax2_pre_activation:0',
-        prediction='dense_1_1/Softmax:0',
+        prediction='dense_1/Softmax:0',
         # pre_avgpool='mixed5b:0',
         # logit_weight='softmax2_w:0',
         # logit_bias='softmax2_b:0',
