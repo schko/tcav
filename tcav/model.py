@@ -484,6 +484,28 @@ class vgg16multiClassWrapper_public(PublicImageModelWrapper):
                                                   scope='v1', default_vars=default_vars)
       self.model_name = 'vgg16multiClass_public'
         
+class inceptionV3multiClassWrapper_public(PublicImageModelWrapper):
+
+    def __init__(self, sess, model_saved_path, labels_path, default_vars):
+      image_shape_v3 = [600, 450, 3]  # [450, 600, 3]
+      self.image_value_range = (-117, 255 - 117)
+      endpoints_v1 = dict(
+        input='inception_v3_input:0',
+        # logit='softmax2_pre_activation:0',
+        prediction='dense_3/Softmax:0',
+        # pre_avgpool='mixed5b:0',
+        # logit_weight='softmax2_w:0',
+        # logit_bias='softmax2_b:0',
+    )
+      self.sess = sess
+      super(inceptionV3multiClassWrapper_public, self).__init__(sess,
+                                                  model_saved_path,
+                                                  labels_path,
+                                                  image_shape_v3,
+                                                  endpoints_v1,
+                                                  scope='inception_v3', default_vars=default_vars)
+      self.model_name = 'inceptionV3multiClass_public'
+        
 class InceptionV3Wrapper_public(PublicImageModelWrapper):
   def __init__(self, sess, model_saved_path, labels_path):
     self.image_value_range = (-1, 1)
