@@ -313,7 +313,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
     if default_vars:
         op_type = 'Concat' # for GoogleNet
     else:
-        op_type = 'concat' #for mixed** layers
+        op_type = 'concat/axis' #for mixed** layers
         #op_type = 'BiasAdd' # Reshape for flatten_1, Merge for batch_normalization_1, BiasAdd for conv2d_1/conv2d_3/dense_1
     for op in graph.get_operations():
       if op_type in op.type:
