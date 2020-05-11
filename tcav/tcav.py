@@ -150,7 +150,6 @@ class TCAV(object):
       example = examples[i]
       grad = np.reshape(
           mymodel.get_gradient(act, [class_id], cav.bottleneck, example), -1)
-      print('grad: ', grad)
       directional_dir_vals.append(np.dot(grad, cav.get_direction(concept)))
     return directional_dir_vals
 
@@ -240,7 +239,7 @@ class TCAV(object):
         results.append(res)
     else:
       for i, param in enumerate(self.params):
-        print(i,param)
+        print(i,param.get_key())
         tf.logging.info('Running param %s of %s' % (i, len(self.params)))
         results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
     tf.logging.info('Done running %s params. Took %s seconds...' % (len(
