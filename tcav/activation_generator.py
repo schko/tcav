@@ -57,6 +57,7 @@ class ActivationGeneratorBase(ActivationGeneratorInterface):
     pass
 
   def get_activations_for_concept(self, concept, bottleneck):
+    print('get_activations_for_concept: ', concept)
     examples = self.get_examples_for_concept(concept)
     return self.get_activations_for_examples(examples, bottleneck)
 
