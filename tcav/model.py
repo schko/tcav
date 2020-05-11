@@ -155,13 +155,6 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
       the gradient array.
     """
     print('----get_gradient----')
-    print('self.bottlenecks_gradients: ', self.bottlenecks_gradients)
-    print('self.bottlenecks_gradients[bottleneck_name]: ', self.bottlenecks_gradients[bottleneck_name])
-    print('bottleneck_name: ', bottleneck_name)
-    print('self.bottlenecks_tensors[bottleneck_name]: ', self.bottlenecks_tensors[bottleneck_name])
-    print('y: ', y)
-    print('self.y_input: ', self.y_input)
-    print('----attempting to run session----')
     return self.sess.run(self.bottlenecks_gradients[bottleneck_name], {
         self.bottlenecks_tensors[bottleneck_name]: acts,
         self.y_input: y
