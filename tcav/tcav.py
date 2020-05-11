@@ -227,7 +227,7 @@ class TCAV(object):
     # for random exp,  a machine with cpu = 30, ram = 300G, disk = 10G and
     # pool worker 50 seems to work.
     tf.logging.info('running %s params' % len(self.params))
-    print('params: ', self.params)
+    print('params num: ', len(self.params))
     results = []
     now = time.time()
     if run_parallel:
@@ -240,6 +240,7 @@ class TCAV(object):
         results.append(res)
     else:
       for i, param in enumerate(self.params):
+        print(i,param)
         tf.logging.info('Running param %s of %s' % (i, len(self.params)))
         results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
     tf.logging.info('Done running %s params. Took %s seconds...' % (len(
