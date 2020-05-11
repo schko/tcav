@@ -154,7 +154,6 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     Returns:
       the gradient array.
     """
-    print('----get_gradient----')
     return self.sess.run(self.bottlenecks_gradients[bottleneck_name], {
         self.bottlenecks_tensors[bottleneck_name]: acts,
         self.y_input: y
@@ -223,7 +222,6 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     Returns:
       Activations in the given layer.
     """
-    print('run_examples in model')
     return self.sess.run(self.bottlenecks_tensors[bottleneck_name],
                          {self.ends['input']: examples})
 
