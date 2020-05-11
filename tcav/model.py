@@ -223,7 +223,7 @@ class ModelWrapper(six.with_metaclass(ABCMeta, object)):
     Returns:
       Activations in the given layer.
     """
-    print('self.bottlenecks_tensors: ', self.bottlenecks_tensors)
+    print('run_examples in model')
     return self.sess.run(self.bottlenecks_tensors[bottleneck_name],
                          {self.ends['input']: examples})
 
