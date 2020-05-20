@@ -307,11 +307,12 @@ class PublicImageModelWrapper(ImageModelWrapper):
         op_type = ['Reshape','BiasAdd'] #for mixed** layers
         #op_type = 'BiasAdd' # Reshape for flatten_1, Merge for batch_normalization_1, BiasAdd for conv2d_1/conv2d_3/dense_1
     for op in graph.get_operations():
-      if op_type in op.type:
-        print(op)
-      if op.name.startswith(scope+'/') and op_type in op.type:
-        name = op.name.split('/')[1]
-        bn_endpoints[name] = op.outputs[0]
+        for o in op_type: 
+          if o in op.type:
+            print(o)
+          if op.name.startswith(scope+'/') and o in op.type:
+            name = op.name.split('/')[1]
+            bn_endpoints[name] = op.outputs[0]
     return bn_endpoints
 
   # Load graph and import into graph used by our session
