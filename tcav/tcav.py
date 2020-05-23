@@ -239,7 +239,8 @@ class TCAV(object):
         results.append(res)
     else:
       for i, param in enumerate(self.params):
-        print(i,param.get_key())
+        if (i % 100) == 0:
+            print(i,param.get_key())
         tf.logging.info('Running param %s of %s' % (i, len(self.params)))
         results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
     tf.logging.info('Done running %s params. Took %s seconds...' % (len(
