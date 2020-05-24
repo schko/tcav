@@ -313,6 +313,7 @@ class PublicImageModelWrapper(ImageModelWrapper):
           if op.name.startswith(scope+'/') and o in op.type:
             name = op.name.split('/')[1]
             bn_endpoints[name] = op.outputs[0]
+     print('bn_endpoints: ', bn_endpoints)
     return bn_endpoints
 
   # Load graph and import into graph used by our session
