@@ -496,7 +496,7 @@ class denseNetMultiClassWrapper_public(PublicImageModelWrapper):
                                                   labels_path,
                                                   image_shape_v3,
                                                   endpoints_v1,
-                                                  scope='densenet121', default_vars=default_vars)
+                                                  scope='v1', default_vars=default_vars)
       self.model_name = 'denseNetMultiClass_public'
         
 class inceptionV3multiClassWrapper_public(PublicImageModelWrapper):
