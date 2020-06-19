@@ -227,7 +227,7 @@ class TCAV(object):
     # pool worker 50 seems to work.
     tf.logging.info('running %s params' % len(self.params))
     print('params num: ', len(self.params))
-    print('params: ', self.params)
+    print('params: ', [s.get_key() for s in self.params]
     results = []
     now = time.time()
     if run_parallel:
@@ -238,10 +238,10 @@ class TCAV(object):
           self.params), 1):
         print('Finished running param %s of %s' % (i, len(self.params)))
         print(res)
-        print(self.params[i])
+        print(self.params[i].get_key())
         results.append(res)
         if i % 10 == 0:
-            with open('result_'+ i + '.pickle', 'wb') as handle:
+            with open('result_'+ int(i) + '.pickle', 'wb') as handle:
                 pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
       for i, param in enumerate(self.params):
