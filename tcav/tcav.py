@@ -413,8 +413,8 @@ class TCAV(object):
       parameters
     """
     params = []
-    for bottleneck in self.bottlenecks:
-      for target_in_test, concepts_in_test in self.pairs_to_test:
+    for target_in_test, concepts_in_test in self.pairs_to_test:
+      for bottleneck in self.bottlenecks: 
         for alpha in self.alphas:
           tf.logging.info('%s %s %s %s', bottleneck, concepts_in_test,
                           target_in_test, alpha)
