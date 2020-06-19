@@ -28,7 +28,7 @@ import time
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-
+import pickle
 
 class TCAV(object):
   """TCAV object: runs TCAV for one target and a set of concepts.
@@ -227,6 +227,7 @@ class TCAV(object):
     # pool worker 50 seems to work.
     tf.logging.info('running %s params' % len(self.params))
     print('params num: ', len(self.params))
+    print('params: ', self.params)
     results = []
     now = time.time()
     if run_parallel:
@@ -235,8 +236,13 @@ class TCAV(object):
           lambda p: self._run_single_set(
             p, overwrite=overwrite, run_parallel=run_parallel),
           self.params), 1):
-        tf.logging.info('Finished running param %s of %s' % (i, len(self.params)))
+        print('Finished running param %s of %s' % (i, len(self.params)))
+        print(res)
+        print(self.params[i])
         results.append(res)
+        if i % 10 == 0:
+            with open('result_'+ i + '.pickle', 'wb') as handle:
+                pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
       for i, param in enumerate(self.params):
         if (i % 100) == 0:
