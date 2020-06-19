@@ -241,7 +241,7 @@ class TCAV(object):
         print(self.params[i].get_key())
         results.append(res)
         if i % 10 == 0:
-            with open('result_'+ int(i) + '.pickle', 'wb') as handle:
+            with open('result_'+ str(i) + '.pickle', 'wb') as handle:
                 pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
       for i, param in enumerate(self.params):
