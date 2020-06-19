@@ -227,7 +227,7 @@ class TCAV(object):
     # pool worker 50 seems to work.
     tf.logging.info('running %s params' % len(self.params))
     print('params num: ', len(self.params))
-    print('params: ', [s.get_key() for s in self.params]
+    print('params: ', [s.get_key() for s in self.params])
     results = []
     now = time.time()
     if run_parallel:
