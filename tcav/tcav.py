@@ -250,6 +250,7 @@ class TCAV(object):
                 with open('result_'+ str(i) + '.pickle', 'wb') as handle:
                     pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
                 print('Finished running param %s of %s' % (i, len(self.params)))
+                print(param.bottleneck, param.concepts, param.target_class)
     tf.logging.info('Done running %s params. Took %s seconds...' % (len(
         self.params), time.time() - now))
     if return_proto:
