@@ -243,12 +243,13 @@ class TCAV(object):
             print('Finished running param %s of %s' % (i, len(self.params)))
     else:
       for i, param in enumerate(self.params):
-        tf.logging.info('Running param %s of %s' % (i, len(self.params)))
-        results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
-        if i % 100 == 0:
-            with open('result_'+ str(i) + '.pickle', 'wb') as handle:
-                pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
-            print('Finished running param %s of %s' % (i, len(self.params)))
+        if i > 45200:
+            tf.logging.info('Running param %s of %s' % (i, len(self.params)))
+            results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
+            if i % 100 == 0:
+                with open('result_'+ str(i) + '.pickle', 'wb') as handle:
+                    pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                print('Finished running param %s of %s' % (i, len(self.params)))
     tf.logging.info('Done running %s params. Took %s seconds...' % (len(
         self.params), time.time() - now))
     if return_proto:
