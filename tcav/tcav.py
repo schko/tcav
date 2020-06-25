@@ -245,7 +245,6 @@ class TCAV(object):
       for i, param in enumerate(self.params):
         if i > 45200:
             tf.logging.info('Running param %s of %s' % (i, len(self.params)))
-            print(param.bottleneck, param.concepts, param.target_class)
             results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
             if i % 100 == 0:
                 with open('result_'+ str(i) + '.pickle', 'wb') as handle:
