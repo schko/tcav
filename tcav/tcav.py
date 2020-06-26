@@ -209,7 +209,7 @@ class TCAV(object):
     self.params = self.get_params()
     tf.logging.info('TCAV will %s params' % len(self.params))
 
-  def run(self, num_workers=10, run_parallel=False, overwrite=False, return_proto=False):
+  def run(self, num_workers=10, run_parallel=False, overwrite=False, return_proto=False, save_interval = 100, existing_results=None):
     """Run TCAV for all parameters (concept and random), write results to html.
 
     Args:
@@ -237,16 +237,16 @@ class TCAV(object):
           self.params), 1):
         
         results.append(res)
-        if i % 100 == 0:
+        if i % save_interval == 0:
             with open('result_'+ str(i) + '.pickle', 'wb') as handle:
                 pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
             print('Finished running param %s of %s' % (i, len(self.params)))
     else:
       for i, param in enumerate(self.params):
-        if i > 45200:
+        if not existing_results or i > existing_results:
             tf.logging.info('Running param %s of %s' % (i, len(self.params)))
             results.append(self._run_single_set(param, overwrite=overwrite, run_parallel=run_parallel))
-            if i % 100 == 0:
+            if i % save_interval == 0:
                 with open('result_'+ str(i) + '.pickle', 'wb') as handle:
                     pickle.dump(results, handle, protocol=pickle.HIGHEST_PROTOCOL)
                 print('Finished running param %s of %s' % (i, len(self.params)))
